@@ -94,7 +94,7 @@ const Home = () => {
               <div className="absolute inset-0 bg-[#c6b677] translate-x-4 translate-y-4 rounded-xl -z-10 transition-transform duration-300 group-hover:translate-x-6 group-hover:translate-y-6"></div>
 
               <img
-                src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=600&auto=format&fit=crop"
+                src="/chandan-sir.jpeg"
                 alt="Principal"
                 className="w-64 h-80 md:w-full md:h-auto max-w-[320px] object-cover rounded-xl shadow-lg border border-gray-100 relative z-10"
               />
@@ -121,7 +121,7 @@ const Home = () => {
             </div>
 
             <div className="mt-10 border-l-4 border-[#c6b677] pl-4">
-              <h4 className="text-xl font-bold text-gray-800 tracking-wide">Dr. Placeholder Name</h4>
+              <h4 className="text-xl font-bold text-gray-800 tracking-wide">Prof. (Dr.) Chandan Kumar</h4>
               <p className="text-sm font-medium text-gray-500 uppercase tracking-widest mt-1">Principal, DCE Darbhanga</p>
             </div>
 

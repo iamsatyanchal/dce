@@ -327,13 +327,13 @@ const Placements = () => {
                         {/* TPO */}
                         <div className="max-w-xl mx-auto bg-white p-8 rounded-xl shadow-lg border-t-4 border-[#c6b677] text-center">
                             <div className="w-32 h-32 bg-gray-200 rounded-full mx-auto mb-6 overflow-hidden">
-                                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=200&auto=format&fit=crop" alt="TPO" className="w-full h-full object-cover" />
+                                <img src="https://www.dce-darbhanga.org/wp-content/uploads/2023/05/Screenshot_20230515_192611_WhatsApp.jpg" alt="TPO" className="w-full h-full object-cover" />
                             </div>
-                            <h3 className="text-2xl font-bold text-[#133b5c]">Dr. Alok Kumar</h3>
+                            <h3 className="text-2xl font-bold text-[#133b5c]">Mr. Prafulla Chandra</h3>
                             <p className="text-yellow-600 font-bold text-sm mb-4 uppercase tracking-widest">Training & Placement Officer</p>
                             <div className="flex flex-col gap-2 text-gray-500 text-sm">
-                                <span>tpo@dce.ac.in</span>
-                                <span>+91 999 000 1111</span>
+                                <span>prafuldce@gmail.com</span>
+                                <span>+91-8884911159</span>
                             </div>
                         </div>
 
@@ -443,11 +443,11 @@ const Placements = () => {
                         </div>
                         <div>
                             <h5 className="font-bold text-[#133b5c] mb-4 uppercase tracking-widest text-xs">Email Inquiries</h5>
-                            <p className="text-gray-500 text-sm">tpo@dce.ac.in<br />placements@dce.ac.in</p>
+                            <p className="text-gray-500 text-sm">prafuldce@gmail.com<br />placements@dce.ac.in</p>
                         </div>
                         <div>
                             <h5 className="font-bold text-[#133b5c] mb-4 uppercase tracking-widest text-xs">Phone Numbers</h5>
-                            <p className="text-gray-500 text-sm">+91 06272-255255<br />+91 999 000 2222</p>
+                            <p className="text-gray-500 text-sm">+91 06272-255255<br />+91-8884911159</p>
                         </div>
                         <div>
                             <h5 className="font-bold text-[#133b5c] mb-4 uppercase tracking-widest text-xs">Working Hours</h5>

@@ -71,6 +71,7 @@ const CampusLife = () => {
                                 <ChevronRight size={18} />
                             </div>
                         </div>
+                        <Link to="/student-fest" className="absolute inset-0 z-20"></Link>
                     </motion.div>
 
                     {/* Center Column Wrapper */}
@@ -93,6 +94,7 @@ const CampusLife = () => {
                                     <ChevronRight size={14} />
                                 </div>
                             </div>
+                            <Link to="/student-society/kala-and-kalakar" className="absolute inset-0 z-20"></Link>
                         </motion.div>
 
                         {/* Block 3: Center Bottom Menu */}
@@ -107,7 +109,7 @@ const CampusLife = () => {
                                 {[
                                     { label: "Sports", path: "/campus-life/sports" },
                                     { label: "Innovation & Entrepreneurship", path: "/campus-life/innovation" },
-                                    { label: "Magazine", path: "/campus-life/magazine" },
+                                    { label: "Magazine", path: "/magazine" },
                                     { label: "360° Virtual Tour", path: "/campus-life/tour" }
                                 ].map((item, index) => (
                                     <li key={index} className="border-b border-white/20 pb-3 last:border-0 last:pb-0 overflow-hidden">
@@ -144,6 +146,7 @@ const CampusLife = () => {
                                         <ChevronRight size={14} />
                                     </div>
                                 </div>
+                                <Link to="/about/infrastructure" className="absolute inset-0 z-20"></Link>
                             </motion.div>
 
                             {/* Block 5: Facilities Right */}
@@ -163,6 +166,7 @@ const CampusLife = () => {
                                         <ChevronRight size={14} />
                                     </div>
                                 </div>
+                                <Link to="/about/infrastructure" className="absolute inset-0 z-20"></Link>
                             </motion.div>
                         </div>
 

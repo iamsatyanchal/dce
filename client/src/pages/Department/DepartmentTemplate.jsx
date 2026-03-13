@@ -307,16 +307,18 @@ const DepartmentTemplate = ({ data }) => {
                         <h2 className="text-4xl font-serif font-bold text-[#133b5c] mb-6 leading-tight">Industry Interaction & Placements</h2>
                         <p className="text-gray-500 text-lg mb-10 leading-relaxed font-light">The department consistently maintains excellent placement records with students being recruited by Fortune 500 companies and leading Indian conglomerates.</p>
 
-                        <div className="grid grid-cols-2 gap-6 mb-10">
-                            <div className="bg-[#f8f9fa] p-8 rounded-2xl text-center border-b-4 border-[#c6b677]">
-                                <p className="text-3xl font-bold text-[#133b5c]">{data.placements.highestPackage}</p>
-                                <p className="text-xs text-gray-500 uppercase font-bold tracking-widest mt-1">Highest Package</p>
+                        {data.placements && (
+                            <div className="grid grid-cols-2 gap-6 mb-10">
+                                <div className="bg-[#f8f9fa] p-8 rounded-2xl text-center border-b-4 border-[#c6b677]">
+                                    <p className="text-3xl font-bold text-[#133b5c]">{data.placements.highestPackage}</p>
+                                    <p className="text-xs text-gray-500 uppercase font-bold tracking-widest mt-1">Highest Package</p>
+                                </div>
+                                <div className="bg-[#f8f9fa] p-8 rounded-2xl text-center border-b-4 border-[#133b5c]">
+                                    <p className="text-3xl font-bold text-[#133b5c]">{data.placements.averagePackage}</p>
+                                    <p className="text-xs text-gray-500 uppercase font-bold tracking-widest mt-1">Average Package</p>
+                                </div>
                             </div>
-                            <div className="bg-[#f8f9fa] p-8 rounded-2xl text-center border-b-4 border-[#133b5c]">
-                                <p className="text-3xl font-bold text-[#133b5c]">{data.placements.averagePackage}</p>
-                                <p className="text-xs text-gray-500 uppercase font-bold tracking-widest mt-1">Average Package</p>
-                            </div>
-                        </div>
+                        )}
                         <button className="bg-[#133b5c] text-white px-10 py-4 rounded-sm font-bold shadow-xl flex items-center gap-3 hover:translate-x-2 transition-all">View Placement Record <FaChartLine /></button>
                     </div>
 

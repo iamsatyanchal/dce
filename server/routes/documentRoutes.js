@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Document = require('../models/Document');
-const { protect, adminOrCoordinator } = require('../middleware/authMiddleware');
+const { protect, coordinatorOrAdmin } = require('../middleware/authMiddleware');
 
 // Get documents (publicly accessible)
 router.get('/', async (req, res) => {

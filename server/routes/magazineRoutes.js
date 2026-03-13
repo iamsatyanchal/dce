@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Magazine = require('../models/Magazine');
-const { protect, adminOrCoordinator } = require('../middleware/authMiddleware');
+const { protect, coordinatorOrAdmin } = require('../middleware/authMiddleware');
 
 // Get all magazines based on role
 router.get('/', async (req, res) => {
@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
 });
 
 // Create magazine
-router.post('/', protect, adminOrCoordinator, async (req, res) => {
+router.post('/', protect, coordinatorOrAdmin, async (req, res) => {
     try {
         // If an admin creates it, we can auto-approve it. If coordinator, false.
         const isApproved = req.user.isAdmin ? true : false;
@@ -62,7 +62,7 @@ router.put('/:id/approve', protect, async (req, res) => {
 });
 
 // Delete magazine
-router.delete('/:id', protect, adminOrCoordinator, async (req, res) => {
+router.delete('/:id', protect, coordinatorOrAdmin, async (req, res) => {
     try {
         const magazine = await Magazine.findById(req.params.id);
         if (!magazine) return res.status(404).json({ message: 'Magazine not found' });

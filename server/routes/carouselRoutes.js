@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Carousel = require('../models/Carousel');
-const { protect, adminOrCoordinator } = require('../middleware/authMiddleware');
+const { protect, coordinatorOrAdmin } = require('../middleware/authMiddleware');
 
 // Get all carousel items based on role
 router.get('/', async (req, res) => {
@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
 });
 
 // Create carousel item
-router.post('/', protect, adminOrCoordinator, async (req, res) => {
+router.post('/', protect, coordinatorOrAdmin, async (req, res) => {
     try {
         // If an admin creates it, auto-approve it. If coordinator, false.
         const isApproved = req.user.isAdmin ? true : false;
@@ -61,7 +61,7 @@ router.put('/:id/approve', protect, async (req, res) => {
 });
 
 // Delete carousel item
-router.delete('/:id', protect, adminOrCoordinator, async (req, res) => {
+router.delete('/:id', protect, coordinatorOrAdmin, async (req, res) => {
     try {
         const item = await Carousel.findById(req.params.id);
         if (!item) return res.status(404).json({ message: 'Carousel item not found' });

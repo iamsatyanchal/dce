@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../services/api";
 import { Trash2, FileText, Image as ImageIcon, Mail, LayoutDashboard, Link as LinkIcon, Bell, LogOut, User, Plus, ExternalLink, ChevronRight, BarChart3, Clock, CheckCircle2, ShieldCheck, MessageSquare, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -28,11 +28,11 @@ const Admin = () => {
     testimonials: 0
   });
 
-  const API_URL = "http://localhost:5000/api/notices";
-  const IMAGE_API_URL = "http://localhost:5000/api/images";
-  const LINK_API_URL = "http://localhost:5000/api/important-links";
-  const MESSAGE_API_URL = "http://localhost:5000/api/messages";
-  const TESTIMONIAL_API_URL = "http://localhost:5000/api/student-life/testimonials";
+  const API_URL = "/notices";
+  const IMAGE_API_URL = "/images";
+  const LINK_API_URL = "/important-links";
+  const MESSAGE_API_URL = "/messages";
+  const TESTIMONIAL_API_URL = "/student-life/testimonials";
 
   // Important Links State
   const [links, setLinks] = useState([]);
@@ -51,7 +51,7 @@ const Admin = () => {
   const [coordEmail, setCoordEmail] = useState("");
   const [coordPassword, setCoordPassword] = useState("");
 
-  const COORDINATOR_API_URL = "http://localhost:5000/api/users/coordinators";
+  const COORDINATOR_API_URL = "/users/coordinators";
 
   // Get token from localStorage
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -83,7 +83,7 @@ const Admin = () => {
 
   const fetchMessages = async () => {
     try {
-      const response = await axios.get(MESSAGE_API_URL, {
+      const response = await api.get(MESSAGE_API_URL, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessages(response.data);
@@ -95,7 +95,7 @@ const Admin = () => {
 
   const fetchTestimonials = async () => {
     try {
-      const response = await axios.get(`${TESTIMONIAL_API_URL}/admin`, {
+      const response = await api.get(`${TESTIMONIAL_API_URL}/admin`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setTestimonials(response.data);
@@ -107,7 +107,7 @@ const Admin = () => {
 
   const fetchCoordinators = async () => {
     try {
-      const response = await axios.get(COORDINATOR_API_URL, {
+      const response = await api.get(COORDINATOR_API_URL, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setCoordinators(response.data);
@@ -127,7 +127,7 @@ const Admin = () => {
     setMessage("");
 
     try {
-      await axios.post(COORDINATOR_API_URL, { email: coordEmail, password: coordPassword }, {
+      await api.post(COORDINATOR_API_URL, { email: coordEmail, password: coordPassword }, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setMessage("Coordinator added successfully!");
@@ -145,7 +145,7 @@ const Admin = () => {
   const handleDeleteCoordinator = async (id) => {
     if (!window.confirm("Are you sure you want to delete this coordinator?")) return;
     try {
-      await axios.delete(`${COORDINATOR_API_URL}/${id}`, {
+      await api.delete(`${COORDINATOR_API_URL}/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setCoordinators(coordinators.filter(c => c._id !== id));
@@ -158,7 +158,7 @@ const Admin = () => {
 
   const fetchNotices = async () => {
     try {
-      const response = await axios.get(API_URL);
+      const response = await api.get(API_URL);
       setNotices(response.data);
       setStats(prev => ({ ...prev, notices: response.data.length }));
     } catch (error) {
@@ -168,7 +168,7 @@ const Admin = () => {
 
   const fetchImages = async () => {
     try {
-      const response = await axios.get(IMAGE_API_URL);
+      const response = await api.get(IMAGE_API_URL);
       setImages(response.data);
       setStats(prev => ({ ...prev, images: response.data.length }));
     } catch (error) {
@@ -178,7 +178,7 @@ const Admin = () => {
 
   const fetchLinks = async () => {
     try {
-      const response = await axios.get(LINK_API_URL);
+      const response = await api.get(LINK_API_URL);
       setLinks(response.data);
       setStats(prev => ({ ...prev, links: response.data.length }));
     } catch (error) {
@@ -207,7 +207,7 @@ const Admin = () => {
     setMessage("");
 
     try {
-      await axios.post(API_URL, formData, {
+      await api.post(API_URL, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`
@@ -241,7 +241,7 @@ const Admin = () => {
     setMessage("");
 
     try {
-      await axios.post(IMAGE_API_URL, formData, {
+      await api.post(IMAGE_API_URL, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`
@@ -262,7 +262,7 @@ const Admin = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this notice?")) return;
     try {
-      await axios.delete(`${API_URL}/${id}`, {
+      await api.delete(`${API_URL}/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setNotices(notices.filter((n) => n._id !== id));
@@ -282,7 +282,7 @@ const Admin = () => {
     setMessage("");
 
     try {
-      await axios.post(LINK_API_URL, { title: linkTitle, url: linkUrl }, {
+      await api.post(LINK_API_URL, { title: linkTitle, url: linkUrl }, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setMessage("Link added successfully!");
@@ -300,7 +300,7 @@ const Admin = () => {
   const handleDeleteLink = async (id) => {
     if (!window.confirm("Delete this link?")) return;
     try {
-      await axios.delete(`${LINK_API_URL}/${id}`, {
+      await api.delete(`${LINK_API_URL}/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setLinks(links.filter(l => l._id !== id));
@@ -312,7 +312,7 @@ const Admin = () => {
   const handleDeleteImage = async (id) => {
     if (!window.confirm("Are you sure you want to delete this image?")) return;
     try {
-      await axios.delete(`${IMAGE_API_URL}/${id}`, {
+      await api.delete(`${IMAGE_API_URL}/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setImages(images.filter((img) => img._id !== id));
@@ -326,7 +326,7 @@ const Admin = () => {
   const handleDeleteMessage = async (id) => {
     if (!window.confirm("Are you sure you want to delete this message?")) return;
     try {
-      await axios.delete(`${MESSAGE_API_URL}/${id}`, {
+      await api.delete(`${MESSAGE_API_URL}/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessages(messages.filter(m => m._id !== id));
@@ -339,7 +339,7 @@ const Admin = () => {
 
   const handleApproveTestimonial = async (id) => {
     try {
-      await axios.patch(`${TESTIMONIAL_API_URL}/${id}/approve`, {}, {
+      await api.patch(`${TESTIMONIAL_API_URL}/${id}/approve`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessage("Testimonial approved & published!");
@@ -353,7 +353,7 @@ const Admin = () => {
   const handleDeleteTestimonial = async (id) => {
     if (!window.confirm("Are you sure you want to delete this testimonial?")) return;
     try {
-      await axios.delete(`${TESTIMONIAL_API_URL}/${id}`, {
+      await api.delete(`${TESTIMONIAL_API_URL}/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setTestimonials(testimonials.filter(t => t._id !== id));
@@ -996,70 +996,70 @@ const Admin = () => {
                   testimonials.map((t) => (
                     <div key={t._id} className={`bg-white p-8 rounded-[2rem] border ${t.isApproved ? 'border-gray-100' : 'border-purple-200 bg-purple-50/10'} shadow-sm transition-all duration-300 group`}>
                       <div className="flex flex-col md:flex-row gap-6">
-                        
+
                         {/* Avatar */}
                         <div className="shrink-0 flex items-start pt-2">
-                           <div 
-                              className={`w-16 h-16 rounded-full overflow-hidden border-2 cursor-pointer hover:opacity-80 transition-opacity ${t.isApproved ? 'border-gray-200' : 'border-[#c6b677]'}`}
-                              onClick={() => t.imageUrl && setSelectedTestimonialImage(t.imageUrl)}
-                            >
-                              {t.imageUrl ? (
-                                  <img src={t.imageUrl} alt={t.name} className="w-full h-full object-cover" />
-                              ) : (
-                                  <div className="w-full h-full bg-[#133b5c] text-white flex justify-center items-center font-bold text-xl uppercase">
-                                    {t.name.charAt(0)}
-                                  </div>
-                              )}
-                           </div>
+                          <div
+                            className={`w-16 h-16 rounded-full overflow-hidden border-2 cursor-pointer hover:opacity-80 transition-opacity ${t.isApproved ? 'border-gray-200' : 'border-[#c6b677]'}`}
+                            onClick={() => t.imageUrl && setSelectedTestimonialImage(t.imageUrl)}
+                          >
+                            {t.imageUrl ? (
+                              <img src={t.imageUrl} alt={t.name} className="w-full h-full object-cover" />
+                            ) : (
+                              <div className="w-full h-full bg-[#133b5c] text-white flex justify-center items-center font-bold text-xl uppercase">
+                                {t.name.charAt(0)}
+                              </div>
+                            )}
+                          </div>
                         </div>
 
                         {/* Content */}
                         <div className="flex-1 space-y-3">
-                           <div className="flex items-center justify-between">
-                              <div>
-                                <h3 className="font-bold text-[#133b5c] text-xl">{t.name}</h3>
-                                <div className="flex items-center gap-3 text-xs mt-1">
-                                    <span className="text-gray-500 font-bold tracking-widest uppercase">{t.branch} • {t.batch}</span>
-                                    {t.company && (
-                                        <>
-                                          <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
-                                          <span className="text-emerald-600 font-bold tracking-widest uppercase">{t.company}</span>
-                                        </>
-                                    )}
-                                </div>
-                              </div>
-                              <div className="shrink-0">
-                                {t.isApproved ? (
-                                    <span className="px-3 py-1 bg-emerald-100 text-emerald-700 text-[10px] font-bold uppercase tracking-widest rounded-full">Approved</span>
-                                ) : (
-                                    <span className="px-3 py-1 bg-purple-100 text-purple-700 text-[10px] font-bold uppercase tracking-widest rounded-full animate-pulse">Pending Review</span>
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <h3 className="font-bold text-[#133b5c] text-xl">{t.name}</h3>
+                              <div className="flex items-center gap-3 text-xs mt-1">
+                                <span className="text-gray-500 font-bold tracking-widest uppercase">{t.branch} • {t.batch}</span>
+                                {t.company && (
+                                  <>
+                                    <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
+                                    <span className="text-emerald-600 font-bold tracking-widest uppercase">{t.company}</span>
+                                  </>
                                 )}
                               </div>
-                           </div>
-                           
-                           <div className="bg-gray-50 p-5 rounded-2xl mt-4">
-                              <p className="text-gray-600 italic font-serif leading-relaxed">"{t.text}"</p>
-                           </div>
+                            </div>
+                            <div className="shrink-0">
+                              {t.isApproved ? (
+                                <span className="px-3 py-1 bg-emerald-100 text-emerald-700 text-[10px] font-bold uppercase tracking-widest rounded-full">Approved</span>
+                              ) : (
+                                <span className="px-3 py-1 bg-purple-100 text-purple-700 text-[10px] font-bold uppercase tracking-widest rounded-full animate-pulse">Pending Review</span>
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="bg-gray-50 p-5 rounded-2xl mt-4">
+                            <p className="text-gray-600 italic font-serif leading-relaxed">"{t.text}"</p>
+                          </div>
                         </div>
 
                         {/* Actions */}
                         <div className="flex flex-row md:flex-col justify-end gap-3 shrink-0 pt-4 border-t border-gray-100 md:border-t-0 md:pt-0">
-                            {!t.isApproved && (
-                                <button
-                                    onClick={() => handleApproveTestimonial(t._id)}
-                                    className="flex-1 md:flex-initial p-4 bg-emerald-50 text-emerald-600 rounded-2xl hover:bg-emerald-500 hover:text-white transition-all shadow-sm flex items-center justify-center gap-2"
-                                    title="Approve & Publish"
-                                >
-                                    <CheckCircle2 size={20} /> <span className="text-sm font-bold md:hidden">Approve</span>
-                                </button>
-                            )}
+                          {!t.isApproved && (
                             <button
-                                onClick={() => handleDeleteTestimonial(t._id)}
-                                className="flex-1 md:flex-initial p-4 bg-red-50 text-red-500 rounded-2xl hover:bg-red-500 hover:text-white transition-all shadow-sm flex items-center justify-center gap-2"
-                                title={t.isApproved ? "Unpublish & Delete" : "Reject & Delete"}
+                              onClick={() => handleApproveTestimonial(t._id)}
+                              className="flex-1 md:flex-initial p-4 bg-emerald-50 text-emerald-600 rounded-2xl hover:bg-emerald-500 hover:text-white transition-all shadow-sm flex items-center justify-center gap-2"
+                              title="Approve & Publish"
                             >
-                                <Trash2 size={20} /> <span className="text-sm font-bold md:hidden">Delete</span>
+                              <CheckCircle2 size={20} /> <span className="text-sm font-bold md:hidden">Approve</span>
                             </button>
+                          )}
+                          <button
+                            onClick={() => handleDeleteTestimonial(t._id)}
+                            className="flex-1 md:flex-initial p-4 bg-red-50 text-red-500 rounded-2xl hover:bg-red-500 hover:text-white transition-all shadow-sm flex items-center justify-center gap-2"
+                            title={t.isApproved ? "Unpublish & Delete" : "Reject & Delete"}
+                          >
+                            <Trash2 size={20} /> <span className="text-sm font-bold md:hidden">Delete</span>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -1069,22 +1069,22 @@ const Admin = () => {
 
               {/* Lightbox Modal */}
               {selectedTestimonialImage && (
-                <div 
-                    className="fixed inset-0 z-100 bg-black/95 backdrop-blur-md flex items-center justify-center p-4" 
-                    onClick={() => setSelectedTestimonialImage(null)}
+                <div
+                  className="fixed inset-0 z-100 bg-black/95 backdrop-blur-md flex items-center justify-center p-4"
+                  onClick={() => setSelectedTestimonialImage(null)}
                 >
-                    <button 
-                        onClick={() => setSelectedTestimonialImage(null)} 
-                        className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors bg-white/10 hover:bg-white/20 p-3 rounded-full backdrop-blur-sm z-50"
-                    >
-                       <X size={24} />
-                    </button>
-                    <img 
-                        src={selectedTestimonialImage} 
-                        className="max-h-[90vh] max-w-full object-contain rounded-xl shadow-2xl animate-zoom-in" 
-                        alt="Testimonial Full Size"
-                        onClick={e => e.stopPropagation()} 
-                    />
+                  <button
+                    onClick={() => setSelectedTestimonialImage(null)}
+                    className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors bg-white/10 hover:bg-white/20 p-3 rounded-full backdrop-blur-sm z-50"
+                  >
+                    <X size={24} />
+                  </button>
+                  <img
+                    src={selectedTestimonialImage}
+                    className="max-h-[90vh] max-w-full object-contain rounded-xl shadow-2xl animate-zoom-in"
+                    alt="Testimonial Full Size"
+                    onClick={e => e.stopPropagation()}
+                  />
                 </div>
               )}
             </div>

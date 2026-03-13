@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../services/api';
 import * as Icons from 'lucide-react';
 import { Sparkles, Users, Image as ImageIcon, Heart } from 'lucide-react';
 
@@ -13,7 +11,7 @@ const SocietyPage = () => {
         window.scrollTo(0, 0);
         const fetchSocietyDetails = async () => {
             try {
-                const { data } = await axios.get('http://localhost:5000/api/student-life/societies');
+                const { data } = await api.get('/student-life/societies');
                 const found = data.find(s => s._id === id);
                 setSociety(found);
             } catch (err) {

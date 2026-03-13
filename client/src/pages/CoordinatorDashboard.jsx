@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../services/api";
 import { Trash2, Edit, Image as ImageIcon, Users, MessageSquare, LayoutDashboard, LogOut, Upload, CheckCircle2, Calendar, Star, Film, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -33,7 +33,7 @@ const CoordinatorDashboard = () => {
   const [message, setMessage] = useState("");
   const [stats, setStats] = useState({ fests: 0, societies: 0 });
 
-  const BASE_URL = "http://localhost:5000/api/student-life";
+
 
   // Get token from localStorage
   const coordinatorInfo = JSON.parse(localStorage.getItem("coordinatorInfo"));
@@ -55,14 +55,14 @@ const CoordinatorDashboard = () => {
   // Fetchers
   const fetchFests = async () => {
     try {
-      const { data } = await axios.get(`${BASE_URL}/fests`);
+      const { data } = await api.get(`/student-life/fests`);
       setFests(data);
       setStats(prev => ({ ...prev, fests: data.length }));
     } catch (err) { console.error(err); }
   };
   const fetchSocieties = async () => {
     try {
-      const { data } = await axios.get(`${BASE_URL}/societies`);
+      const { data } = await api.get(`/student-life/societies`);
       setSocieties(data);
       setStats(prev => ({ ...prev, societies: data.length }));
     } catch (err) { console.error(err); }
@@ -86,7 +86,7 @@ const CoordinatorDashboard = () => {
 
     setLoading(true); setMessage("");
     try {
-      await axios.post(`${BASE_URL}/fests`, formData, {
+      await api.post(`/student-life/fests`, formData, {
         headers: { "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}` }
       });
       setMessage("Fest event uploaded successfully!");
@@ -100,7 +100,7 @@ const CoordinatorDashboard = () => {
   const handleDeleteFest = async (id) => {
     if (!window.confirm("Delete this entire fest event?")) return;
     try {
-      await axios.delete(`${BASE_URL}/fests/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+      await api.delete(`/student-life/fests/${id}`, { headers: { Authorization: `Bearer ${token}` } });
       fetchFests();
     } catch (err) { console.error(err); }
   };
@@ -125,12 +125,12 @@ const CoordinatorDashboard = () => {
     setLoading(true); setMessage("");
     try {
       if (editMode) {
-        await axios.put(`${BASE_URL}/societies/${currentSocId}`, formData, {
+        await api.put(`/student-life/societies/${currentSocId}`, formData, {
           headers: { "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}` }
         });
         setMessage("Society updated successfully!");
       } else {
-        await axios.post(`${BASE_URL}/societies`, formData, {
+        await api.post(`/student-life/societies`, formData, {
           headers: { "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}` }
         });
         setMessage("Society added successfully!");
@@ -164,7 +164,7 @@ const CoordinatorDashboard = () => {
   const handleDeleteSociety = async (id) => {
     if (!window.confirm("Delete this society?")) return;
     try {
-      await axios.delete(`${BASE_URL}/societies/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+      await api.delete(`/student-life/societies/${id}`, { headers: { Authorization: `Bearer ${token}` } });
       fetchSocieties();
     } catch (err) { console.error(err); }
   };

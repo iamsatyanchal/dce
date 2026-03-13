@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronRight, ChevronLeft, Info } from 'lucide-react';
 import { motion } from 'framer-motion';
-import axios from 'axios';
+import api from '../services/api';
 import { Link } from 'react-router-dom';
 
 const CampusPlacements = () => {
@@ -11,7 +11,7 @@ const CampusPlacements = () => {
     useEffect(() => {
         const fetchTestimonials = async () => {
             try {
-                const { data } = await axios.get('http://localhost:5000/api/student-life/testimonials');
+                const { data } = await api.get('/student-life/testimonials');
                 setTestimonials(data);
             } catch (err) {
                 console.error("Failed to load testimonials:", err);

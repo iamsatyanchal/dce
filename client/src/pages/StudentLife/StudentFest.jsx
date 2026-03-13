@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../../services/api';
 import { Camera, Music, Trophy, Star, Heart, Calendar, Image as ImageIcon, Sparkles, PartyPopper, ChevronLeft, ChevronRight, X } from 'lucide-react';
 
 const StudentFest = () => {
@@ -9,10 +8,10 @@ const StudentFest = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
-        
+
         const fetchFests = async () => {
             try {
-                const { data } = await axios.get('http://localhost:5000/api/student-life/fests');
+                const { data } = await api.get('/student-life/fests');
                 setFests(data);
             } catch (error) {
                 console.error("Error fetching fests:", error);
@@ -21,7 +20,7 @@ const StudentFest = () => {
             }
         };
         fetchFests();
-        
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -75,7 +74,7 @@ const StudentFest = () => {
                     />
                     <div className="absolute inset-0 bg-linear-to-r from-[#133b5c]/95 to-[#133b5c]/60 backdrop-blur-sm"></div>
                 </div>
-                
+
                 <div className="container mx-auto px-8 md:px-16 relative z-10 text-center text-white">
                     <span className="text-[#c6b677] font-bold uppercase tracking-[0.3em] text-sm mb-6 block animate-fade-in-up">Vibrant Campus Life</span>
                     <h1 className="text-5xl lg:text-7xl font-serif font-bold mb-6 leading-tight animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
@@ -108,7 +107,7 @@ const StudentFest = () => {
             <section className="py-24 bg-[#133b5c] text-white relative overflow-hidden reveal">
                 <div className="absolute top-0 right-0 w-96 h-96 bg-[#c6b677]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
                 <div className="absolute bottom-0 left-0 w-160 h-160 bg-blue-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
-                
+
                 <div className="container mx-auto px-8 md:px-16 relative z-10">
                     <div className="text-center mb-20">
                         <span className="text-[#c6b677] font-bold uppercase tracking-[0.3em] text-xs mb-4 block">Event Archive</span>
@@ -157,13 +156,13 @@ const StudentFest = () => {
                                         <div className="lg:w-2/3 w-full">
                                             {videoId ? (
                                                 <div className="w-full aspect-video rounded-3xl overflow-hidden shadow-2xl border-4 border-white/10">
-                                                    <iframe 
-                                                        width="100%" 
-                                                        height="100%" 
-                                                        src={`https://www.youtube.com/embed/${videoId}?autoplay=0`} 
-                                                        title="YouTube video player" 
-                                                        frameBorder="0" 
-                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                                    <iframe
+                                                        width="100%"
+                                                        height="100%"
+                                                        src={`https://www.youtube.com/embed/${videoId}?autoplay=0`}
+                                                        title="YouTube video player"
+                                                        frameBorder="0"
+                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                                         allowFullScreen
                                                     ></iframe>
                                                 </div>
@@ -243,23 +242,23 @@ const StudentFest = () => {
             {lightbox.isOpen && (
                 <div className="fixed inset-0 z-100 bg-black/95 backdrop-blur-md flex items-center justify-center" onClick={closeLightbox}>
                     <button onClick={closeLightbox} className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors bg-white/10 hover:bg-white/20 p-3 rounded-full backdrop-blur-sm z-50">
-                       <X size={24} />
+                        <X size={24} />
                     </button>
-                    
+
                     {lightbox.images.length > 1 && (
                         <>
                             <button onClick={prevImg} className="absolute left-4 md:left-10 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors bg-white/10 hover:bg-white/20 p-4 rounded-full backdrop-blur-sm z-50">
-                               <ChevronLeft size={32} />
+                                <ChevronLeft size={32} />
                             </button>
                             <button onClick={nextImg} className="absolute right-4 md:right-10 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors bg-white/10 hover:bg-white/20 p-4 rounded-full backdrop-blur-sm z-50">
-                               <ChevronRight size={32} />
+                                <ChevronRight size={32} />
                             </button>
                         </>
                     )}
-                    
+
                     <div className="relative" onClick={e => e.stopPropagation()}>
                         <img src={lightbox.images[lightbox.index].imageUrl} className="max-h-[85vh] max-w-[90vw] object-contain shadow-2xl rounded-xl" alt="Lightbox View" />
-                        
+
                         {lightbox.images.length > 1 && (
                             <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 text-white/60 font-bold tracking-widest text-sm bg-black/50 px-6 py-2 rounded-full backdrop-blur-sm">
                                 {lightbox.index + 1} / {lightbox.images.length}

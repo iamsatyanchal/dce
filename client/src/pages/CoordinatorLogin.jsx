@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import { Lock, User, ArrowRight } from 'lucide-react';
 
@@ -17,7 +17,7 @@ const CoordinatorLogin = () => {
 
         try {
             // Updated to real coordinator login endpoint
-            const { data } = await axios.post('http://localhost:5000/api/auth/coordinator/login', {
+            const { data } = await api.post('/auth/coordinator/login', {
                 userId,
                 password,
             });

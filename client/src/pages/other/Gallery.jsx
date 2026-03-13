@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../services/api';
 import ImageModal from '../components/ImageModal';
 
 const Gallery = () => {
@@ -10,7 +10,7 @@ const Gallery = () => {
     useEffect(() => {
         const fetchImages = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/images');
+                const response = await api.get('/images');
                 setImages(response.data);
             } catch (error) {
                 console.error("Error fetching images:", error);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { ChevronRight, ChevronLeft, Layers } from 'lucide-react';
-import axios from 'axios';
+import api from '../services/api';
 
 const SocialWall = () => {
 
@@ -13,7 +13,7 @@ const SocialWall = () => {
     useEffect(() => {
         const fetchImages = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/images');
+                const response = await api.get('/images');
                 // Map the api data to the shape expected by the component
                 const formattedImages = response.data.map((img) => ({
                     id: img._id,
@@ -63,7 +63,7 @@ const SocialWall = () => {
     // Automatic carousel
     useEffect(() => {
         if (socialPosts.length <= visibleCount) return;
-        
+
         const interval = setInterval(() => {
             nextSlide();
         }, 3500); // Change slides every 3.5 seconds

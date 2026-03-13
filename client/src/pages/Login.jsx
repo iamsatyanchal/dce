@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
 import { Lock, Mail, ArrowRight, ShieldCheck } from 'lucide-react';
 
@@ -15,7 +15,7 @@ const Login = () => {
         setLoading(true);
         setError('');
         try {
-            const { data } = await axios.post('http://localhost:5000/api/auth/login', {
+            const { data } = await api.post('/auth/login', {
                 email,
                 password,
             });

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../services/api';
 import { Link } from 'react-router-dom';
 import { fetchNavigation } from '../services/api';
 import { Menu, X, ChevronDown } from 'lucide-react';
@@ -129,7 +129,7 @@ const Header = () => {
 
     const fetchDynamicSocieties = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/api/student-life/societies');
+        const { data } = await api.get('/student-life/societies');
         if (data && data.length > 0) {
           const dynamicSocieties = data.map(soc => ({
             label: soc.name,

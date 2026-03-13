@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FileText, Calendar } from 'lucide-react';
-import axios from 'axios';
+import api from '../services/api';
 
 const NoticeBoard = () => {
     const [notices, setNotices] = useState([]);
@@ -8,7 +8,7 @@ const NoticeBoard = () => {
     useEffect(() => {
         const fetchNotices = async () => {
             try {
-                const response = await axios.get("http://localhost:5000/api/notices");
+                const response = await api.get("/notices");
                 setNotices(response.data);
             } catch (error) {
                 console.error("Error fetching notices:", error);

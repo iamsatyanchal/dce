@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../services/api';
 import { Palette, Music4, Theater, Mic2, Users, Image as ImageIcon, Sparkles, Heart } from 'lucide-react';
 import * as Icons from 'lucide-react';
 
@@ -13,7 +11,7 @@ const KalaKalakar = () => {
         // Fetch Societies from API
         const fetchSocieties = async () => {
             try {
-                const { data } = await axios.get('http://localhost:5000/api/student-life/societies');
+                const { data } = await api.get('/student-life/societies');
                 setActivities(data);
             } catch (err) {
                 console.error("Error fetching societies:", err);

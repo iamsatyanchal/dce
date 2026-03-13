@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import HeroSlider from '../components/HeroSlider';
 import NoticeBoard from '../components/NoticeBoard';
-import axios from 'axios';
+import api from '../services/api';
 import { FaUniversity, FaQuoteLeft } from "react-icons/fa";
 import CampusLife from '../components/CampusLife';
 import SocialWall from '../components/SocialWall';
@@ -17,11 +17,11 @@ const Home = () => {
     const fetchContent = async () => {
       try {
         // Fetch latest 8 images
-        const imgRes = await axios.get('http://localhost:5000/api/images');
+        const imgRes = await api.get('/images');
         setGalleryImages(imgRes.data.slice(0, 8));
 
         // Fetch important links
-        const linkRes = await axios.get('http://localhost:5000/api/important-links');
+        const linkRes = await api.get('/important-links');
         setImportantLinks(linkRes.data);
       } catch (error) {
         console.error("Error fetching content:", error);

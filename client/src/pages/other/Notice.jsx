@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../../services/api";
 import { FileText, Image as ImageIcon, ExternalLink, Calendar, Search } from "lucide-react";
 
 const Notice = () => {
@@ -14,7 +14,7 @@ const Notice = () => {
   const fetchNotices = async () => {
     try {
       // Updated to fetch from backend API
-      const response = await axios.get("http://localhost:5000/api/notices");
+      const response = await api.get("/notices");
       setNotices(response.data);
     } catch (error) {
       console.error("Error fetching notices:", error);

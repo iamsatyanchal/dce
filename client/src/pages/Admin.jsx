@@ -45,7 +45,7 @@ const Admin = () => {
   const LINK_API_URL = "/important-links";
   const MESSAGE_API_URL = "/messages";
   const TESTIMONIAL_API_URL = "/student-life/testimonials";
-  const MAGAZINE_API_URL = "/magazines";
+  const MAGAZINE_API_URL = "/magazine";
   const CAROUSEL_API_URL = "/carousel";
   const DOCUMENT_API_URL = "/documents";
 

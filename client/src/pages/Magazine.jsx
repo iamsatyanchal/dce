@@ -9,7 +9,7 @@ const Magazine = () => {
     useEffect(() => {
         const fetchMagazines = async () => {
             try {
-                const { data } = await api.get('/magazines');
+                const { data } = await api.get('/magazine');
                 setMagazines(data);
             } catch (error) {
                 console.error("Error fetching magazines:", error);

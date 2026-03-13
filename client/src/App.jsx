@@ -28,14 +28,7 @@ import KalaKalakar from './pages/StudentLife/KalaKalakar';
 import Testimonials from './pages/StudentLife/Testimonials';
 import SocietyPage from './pages/StudentLife/SocietyPage';
 
-// Department Imports
-import Cse from './pages/Department/Cse';
-import Cyber from './pages/Department/Cyber';
-import Civil from './pages/Department/Civil';
-import Mech from './pages/Department/Mech';
-import Eee from './pages/Department/Eee';
-import Fire from './pages/Department/Fire';
-import PowerSystem from './pages/Department/PowerSystem';
+import DepartmentPage from './pages/Department/DepartmentPage';
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -68,14 +61,8 @@ function App() {
           <Route path="/coordinator-login" element={<CoordinatorLogin />} />
           <Route path="/coordinator/dashboard" element={<CoordinatorDashboard />} />
 
-          {/* Department Routes */}
-          <Route path="/department/cse" element={<Cse />} />
-          <Route path="/department/cse-cyber-security" element={<Cyber />} />
-          <Route path="/department/ce" element={<Civil />} />
-          <Route path="/department/me" element={<Mech />} />
-          <Route path="/department/eee" element={<Eee />} />
-          <Route path="/department/fst" element={<Fire />} />
-          <Route path="/department/ps" element={<PowerSystem />} />
+          {/* Dynamic Department Route */}
+          <Route path="/department/:slug" element={<DepartmentPage />} />
           <Route path="/holiday-calendar" element={<HolidayCalendar />} />
           <Route path="/admission" element={<Admission />} />
           <Route path="/academic-calendar" element={<Calender />} />

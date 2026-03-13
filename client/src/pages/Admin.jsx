@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import api from "../services/api";
 import { Trash2, FileText, Image as ImageIcon, Mail, LayoutDashboard, Link as LinkIcon, Bell, LogOut, User, Plus, ExternalLink, ChevronRight, BarChart3, Clock, CheckCircle2, ShieldCheck, MessageSquare, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import ManageDepartments from "../components/ManageDepartments";
 
 const Admin = () => {
   const [showProfile, setShowProfile] = useState(false);
@@ -388,6 +389,7 @@ const Admin = () => {
               { id: 'links', label: 'Quick Links', icon: <LinkIcon size={20} /> },
               { id: 'messages', label: 'Inquiries', icon: <Mail size={20} /> },
               { id: 'testimonials', label: 'Testimonials', icon: <MessageSquare size={20} /> },
+              { id: 'departments', label: 'Departments', icon: <LayoutDashboard size={20} /> },
               { id: 'coordinators', label: 'Coordinators', icon: <User size={20} /> },
             ].map((item) => (
               <li
@@ -740,6 +742,10 @@ const Admin = () => {
                 </div>
               </div>
             </div>
+          )}
+
+          {activeTab === "departments" && (
+            <ManageDepartments />
           )}
 
           {activeTab === "notices" && (

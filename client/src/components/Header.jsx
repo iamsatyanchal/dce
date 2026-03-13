@@ -61,15 +61,7 @@ const Header = () => {
       children: [
         {
           label: "Department",
-          children: [
-            { label: "Computer Science & Engineering", path: "/department/cse" },
-            { label: "Cyber Security", path: "/department/cse-cyber-security" },
-            { label: "Civil Engineering", path: "/department/ce" },
-            { label: "Mechanical Engineering", path: "/department/me" },
-            { label: "Electrical & Electronics Engineering", path: "/department/eee" },
-            { label: "Fire Technology & Safety", path: "/department/fst" },
-            { label: "M.Tech Power System", path: "/department/ps" },
-          ]
+          children: [] // Will be populated dynamically
         },
         {
           label: "Programmes",
@@ -127,45 +119,70 @@ const Header = () => {
       setIsScrolled(window.scrollY > 50);
     };
 
-    const fetchDynamicSocieties = async () => {
+    const fetchDynamicContent = async () => {
       try {
-        const { data } = await api.get('/student-life/societies');
-        if (data && data.length > 0) {
-          const dynamicSocieties = data.map(soc => ({
+        const [socRes, deptRes] = await Promise.all([
+          api.get('/student-life/societies'),
+          api.get('/departments')
+        ]);
+
+        let dynamicSocieties = [];
+        if (socRes.data && socRes.data.length > 0) {
+          dynamicSocieties = socRes.data.map(soc => ({
             label: soc.name,
             path: `/student-society/${soc._id}`
           }));
+        }
 
-          setNavItems(prev => prev.map(item => {
-            if (item.label === "Student Life") {
-              return {
-                ...item,
-                children: item.children.map(child => {
-                  if (child.label === "Student Society") {
-                    // Filter out existing dynamic paths to avoid duplicates
-                    const existingPaths = child.children.map(c => c.path);
-                    const uniqueNewSocieties = dynamicSocieties.filter(ns => !existingPaths.includes(ns.path));
-                    return {
-                      ...child,
-                      children: [
-                        ...child.children,
-                        ...uniqueNewSocieties
-                      ]
-                    };
-                  }
-                  return child;
-                })
-              };
-            }
-            return item;
+        let dynamicDepartments = [];
+        if (deptRes.data && deptRes.data.length > 0) {
+          dynamicDepartments = deptRes.data.map(dept => ({
+            label: dept.name,
+            path: `/department/${dept.slug}`
           }));
         }
+
+        setNavItems(prev => prev.map(item => {
+          if (item.label === "Student Life") {
+            return {
+              ...item,
+              children: item.children.map(child => {
+                if (child.label === "Student Society") {
+                  const existingPaths = child.children.map(c => c.path);
+                  const uniqueNewSocieties = dynamicSocieties.filter(ns => !existingPaths.includes(ns.path));
+                  return {
+                    ...child,
+                    children: [
+                      ...child.children,
+                      ...uniqueNewSocieties
+                    ]
+                  };
+                }
+                return child;
+              })
+            };
+          } else if (item.label === "Academics") {
+            return {
+              ...item,
+              children: item.children.map(child => {
+                if (child.label === "Department") {
+                  return {
+                    ...child,
+                    children: dynamicDepartments
+                  };
+                }
+                return child;
+              })
+            };
+          }
+          return item;
+        }));
       } catch (err) {
-        console.error("Error fetching dynamic societies for header:", err);
+        console.error("Error fetching dynamic header content:", err);
       }
     };
 
-    fetchDynamicSocieties();
+    fetchDynamicContent();
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);

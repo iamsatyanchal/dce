@@ -64,6 +64,7 @@ app.use('/api/important-links', require('./routes/importantLinkRoutes')); // Mou
 app.use('/api/messages', require('./routes/messageRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/student-life', require('./routes/studentLifeRoutes'));
+app.use('/api/departments', require('./routes/departmentRoutes'));
 
 app.get('/', (req, res) => {
   res.send('DCE Darbhanga Clone API is running');

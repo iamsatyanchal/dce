@@ -213,7 +213,7 @@ const CoordinatorDashboard = () => {
       cData.append("category", "system");
       const cRes = await api.post("/images", cData, { headers: { "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}` } });
 
-      await api.post("/magazines", {
+      await api.post("/magazine", {
         title: magTitle,
         pdfUrl: pRes.data.imageUrl,
         coverImage: cRes.data.imageUrl
@@ -252,7 +252,7 @@ const CoordinatorDashboard = () => {
   const handleDeleteItem = async (type, id) => {
     if (!window.confirm(`Delete this ${type}?`)) return;
     try {
-      const url = type === 'magazine' ? `/magazines/${id}` : `/carousel/${id}`;
+      const url = type === 'magazine' ? `/magazine/${id}` : `/carousel/${id}`;
       await api.delete(url, { headers: { Authorization: `Bearer ${token}` } });
       type === 'magazine' ? fetchMagazines() : fetchCarousels();
     } catch (err) { alert(err.response?.data?.message || "Failed to delete"); }

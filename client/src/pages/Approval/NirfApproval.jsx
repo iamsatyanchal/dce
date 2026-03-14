@@ -1,8 +1,24 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaTrophy, FaChartBar, FaFileAlt, FaCheckCircle, FaSearch, FaFilePdf, FaDownload } from 'react-icons/fa';
+import api from '../../services/api';
 
 const NirfApproval = () => {
+    const [documents, setDocuments] = useState([]);
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
+        const fetchDocuments = async () => {
+            try {
+                const { data } = await api.get('/documents?category=nirf');
+                setDocuments(data);
+            } catch (error) {
+                console.error("Error fetching NIRF documents:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchDocuments();
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -15,12 +31,7 @@ const NirfApproval = () => {
         return () => observer.disconnect();
     }, []);
 
-    const data = [
-        { year: "2024", status: "Participated", documents: "NIRF 2024 Data" },
-        { year: "2023", status: "Participated", documents: "NIRF 2023 Data" },
-        { year: "2022", status: "Participated", documents: "NIRF 2022 Data" },
-        { year: "2021", status: "Participated", documents: "NIRF 2021 Data" },
-    ];
+    // Dynamic documents fetch replaced hardcoded data array
 
     return (
         <div className="w-full flex flex-col font-sans bg-white overflow-x-hidden">
@@ -82,22 +93,26 @@ const NirfApproval = () => {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {data.map((item, i) => (
-                            <div key={i} className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 flex items-center justify-between group hover:border-[#c6b677] transition-all">
+                        {loading ? (
+                            <div className="col-span-full py-20 text-center text-gray-400 italic">Retrieving official records...</div>
+                        ) : documents.length === 0 ? (
+                            <div className="col-span-full py-20 text-center text-gray-400 italic">No NIRF documents found in the archive.</div>
+                        ) : documents.map((doc, i) => (
+                            <div key={doc._id} className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100 flex items-center justify-between group hover:border-[#c6b677] transition-all">
                                 <div className="flex items-center gap-6">
                                     <div className="w-16 h-16 bg-[#133b5c]/5 rounded-xl flex items-center justify-center text-[#133b5c] group-hover:bg-[#133b5c] group-hover:text-white transition-all text-2xl font-bold">
-                                        {item.year.slice(-2)}
+                                        {doc.title.slice(-2)}
                                     </div>
                                     <div>
-                                        <h4 className="font-bold text-[#133b5c] text-lg">{item.year} National Submission</h4>
+                                        <h4 className="font-bold text-[#133b5c] text-lg">{doc.title} National Submission</h4>
                                         <div className="flex items-center gap-2 text-green-600 text-xs font-bold uppercase mt-1">
-                                            <FaCheckCircle /> {item.status}
+                                            <FaCheckCircle /> Participated
                                         </div>
                                     </div>
                                 </div>
-                                <button className="p-4 text-[#c6b677] hover:bg-[#c6b677] hover:text-white rounded-full transition-all">
+                                <a href={doc.fileUrl} target="_blank" rel="noopener noreferrer" className="p-4 text-[#c6b677] hover:bg-[#c6b677] hover:text-white rounded-full transition-all block">
                                     <FaDownload />
-                                </button>
+                                </a>
                             </div>
                         ))}
                     </div>

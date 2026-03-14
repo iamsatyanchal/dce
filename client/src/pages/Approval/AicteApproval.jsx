@@ -1,8 +1,24 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaFilePdf, FaDownload, FaUniversity, FaCertificate, FaShieldAlt, FaExternalLinkAlt } from 'react-icons/fa';
+import api from '../../services/api';
 
 const AicteApproval = () => {
+    const [documents, setDocuments] = useState([]);
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
+        const fetchDocuments = async () => {
+            try {
+                const { data } = await api.get('/documents?category=aicte');
+                setDocuments(data);
+            } catch (error) {
+                console.error("Error fetching AICTE documents:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchDocuments();
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -15,17 +31,7 @@ const AicteApproval = () => {
         return () => observer.disconnect();
     }, []);
 
-    const approvals = [
-        { sl: 9, year: "2025–2026" },
-        { sl: 8, year: "2024–2025" },
-        { sl: 7, year: "2023–2024" },
-        { sl: 6, year: "2022–2023" },
-        { sl: 5, year: "2021–2022" },
-        { sl: 4, year: "2020–2021" },
-        { sl: 3, year: "2019–2020" },
-        { sl: 2, year: "2018–2019" },
-        { sl: 1, year: "2017–2018" },
-    ];
+    // Dynamic documents fetch replaced hardcoded approvals array
 
     return (
         <div className="w-full flex flex-col font-sans bg-white overflow-x-hidden">
@@ -97,14 +103,18 @@ const AicteApproval = () => {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-100">
-                                    {approvals.map((item, i) => (
-                                        <tr key={i} className="hover:bg-gray-50 transition-colors group">
-                                            <td className="px-8 py-6 text-gray-500 font-medium">{item.sl}</td>
-                                            <td className="px-8 py-6 text-[#133b5c] font-bold">{item.year}</td>
+                                    {loading ? (
+                                        <tr><td colSpan="3" className="px-8 py-6 text-center text-gray-400 italic">Retrieving official records...</td></tr>
+                                    ) : documents.length === 0 ? (
+                                        <tr><td colSpan="3" className="px-8 py-6 text-center text-gray-400 italic">No AICTE documents found in the archive.</td></tr>
+                                    ) : documents.map((doc, i) => (
+                                        <tr key={doc._id} className="hover:bg-gray-50 transition-colors group">
+                                            <td className="px-8 py-6 text-gray-500 font-medium">{documents.length - i}</td>
+                                            <td className="px-8 py-6 text-[#133b5c] font-bold">{doc.title}</td>
                                             <td className="px-8 py-6 text-center">
-                                                <button className="inline-flex items-center gap-2 bg-[#c6b677]/10 text-[#c6b677] px-6 py-2 rounded-full font-bold text-xs group-hover:bg-[#c6b677] group-hover:text-white transition-all transform group-hover:-translate-y-1">
+                                                <a href={doc.fileUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 bg-[#c6b677]/10 text-[#c6b677] px-6 py-2 rounded-full font-bold text-xs group-hover:bg-[#c6b677] group-hover:text-white transition-all transform group-hover:-translate-y-1">
                                                     <FaFilePdf /> PDF Archive <FaDownload className="text-[10px]" />
-                                                </button>
+                                                </a>
                                             </td>
                                         </tr>
                                     ))}

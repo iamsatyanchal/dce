@@ -8,7 +8,7 @@ const BeuApproval = () => {
     useEffect(() => {
         const fetchDoc = async () => {
             try {
-                const { data } = await api.get('/document?category=beu');
+                const { data } = await api.get('/documents?category=beu');
                 if (data && data.length > 0) setBeuDoc(data[0]);
             } catch (error) {
                 console.error("Error fetching BEU doc:", error);

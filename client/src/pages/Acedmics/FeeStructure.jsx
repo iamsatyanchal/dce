@@ -41,7 +41,7 @@ const FeeStructure = () => {
 
     const fetchFeeChart = async () => {
         try {
-            const { data } = await api.get('/document?category=fee_chart');
+            const { data } = await api.get('/documents?category=fee_chart');
             if (data && data.length > 0) setFeeChart(data[0]);
         } catch (error) {
             console.error("Error fetching fee chart:", error);

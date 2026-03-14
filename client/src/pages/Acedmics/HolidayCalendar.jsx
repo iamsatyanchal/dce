@@ -13,7 +13,7 @@ const HolidayCalendar = () => {
 
     const fetchDocuments = async () => {
         try {
-            const { data } = await api.get('/document?category=holiday_calendar');
+            const { data } = await api.get('/documents?category=holiday_calendar');
             setDocuments(data);
         } catch (error) {
             console.error("Error fetching holiday calendars:", error);

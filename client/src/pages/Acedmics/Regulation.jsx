@@ -9,7 +9,7 @@ const Regulation = () => {
     window.scrollTo(0, 0);
     const fetchDoc = async () => {
       try {
-        const { data } = await api.get('/document?category=anti_ragging');
+        const { data } = await api.get('/documents?category=anti_ragging');
         if (data && data.length > 0) setAntiRaggingDoc(data[0]);
       } catch (error) {
         console.error("Error fetching anti-ragging doc:", error);

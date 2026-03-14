@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import api from '../../services/api';
 import * as Icons from 'lucide-react';
 import { Sparkles, Users, Image as ImageIcon, Heart } from 'lucide-react';

@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../../services/api';
 import { Palette, Music4, Theater, Mic2, Users, Image as ImageIcon, Sparkles, Heart } from 'lucide-react';
 import * as Icons from 'lucide-react';

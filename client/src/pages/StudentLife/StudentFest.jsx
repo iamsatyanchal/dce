@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import { Camera, Music, Trophy, Star, Heart, Calendar, Image as ImageIcon, Sparkles, PartyPopper, ChevronLeft, ChevronRight, X } from 'lucide-react';
 

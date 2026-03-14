@@ -12,7 +12,7 @@ const documentSchema = mongoose.Schema({
     category: {
         type: String,
         required: true,
-        enum: ['holiday_calendar', 'anti_ragging', 'fee_chart', 'aicte', 'nirf', 'beu']
+        enum: ['holiday_calendar', 'anti_ragging', 'fee_chart', 'aicte', 'nirf', 'beu', 'discipline_manual']
     }
 }, {
     timestamps: true

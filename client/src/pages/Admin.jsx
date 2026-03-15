@@ -9,6 +9,7 @@ const Admin = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("dashboard");
   const [notices, setNotices] = useState([]);
+  const [noticesFetched, setNoticesFetched] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState(""); // Added date state
@@ -24,6 +25,7 @@ const Admin = () => {
   const [newItemFile, setNewItemFile] = useState(null);
   const [newItemCover, setNewItemCover] = useState(null);
   const [documentCategory, setDocumentCategory] = useState("holiday_calendar");
+  const [userInfo, setuserInfo] = useState(null);
 
   // Image Gallery State
   const [images, setImages] = useState([]);
@@ -40,7 +42,7 @@ const Admin = () => {
     testimonials: 0
   });
 
-  const API_URL = "/notices";
+  const NOTICES_API_URL = "/notices";
   const IMAGE_API_URL = "/images";
   const LINK_API_URL = "/important-links";
   const MESSAGE_API_URL = "/messages";
@@ -69,14 +71,24 @@ const Admin = () => {
   const COORDINATOR_API_URL = "/users/coordinators";
 
   // Get token from localStorage
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  if(userInfo == null){
+    console.log("first time data set");
+    setuserInfo(JSON.parse(localStorage.getItem("userInfo")))
+  }
+  // const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  
   const token = userInfo?.token;
 
   useEffect(() => {
-    if (!userInfo) {
+    if (!userInfo || !token) { // token bhi add krdiye hai for safe play..
       navigate('/login');
     }
-    if (activeTab === "notifications") {
+    if (activeTab === "dashboard"){
+      fetchNotices();
+      fetchTestimonials();
+      fetchImages();
+    }
+    if (activeTab === "notices") { // fix..
       fetchNotices();
     }
     if (activeTab === "images") {
@@ -97,7 +109,7 @@ const Admin = () => {
     if (activeTab === "magazines") fetchMagazines();
     if (activeTab === "carousel") fetchCarousels();
     if (activeTab === "documents") fetchDocuments();
-  }, [activeTab, navigate, userInfo]); // Added userInfo to dependency array
+  }, [activeTab, navigate, token]); // Removed userInfo causes wo rerendering kr rha tha token better rhega..
 
   const fetchMagazines = async () => {
     try {
@@ -196,13 +208,20 @@ const Admin = () => {
   };
 
   const fetchNotices = async () => {
+    if (noticesFetched == false){ 
+    // idk due to rendering i think ye bar bar call kr rha to usko stop krne ke liye.. krdiye hai
     try {
-      const response = await api.get(API_URL);
+      const response = await api.get(NOTICES_API_URL);
       setNotices(response.data);
       setStats(prev => ({ ...prev, notices: response.data.length }));
+      setNoticesFetched(true);
     } catch (error) {
       console.error("Error fetching notices:", error);
     }
+  }
+  else {
+    console.log("already fetched");
+  }
   };
 
   const fetchImages = async () => {
@@ -257,6 +276,7 @@ const Admin = () => {
       setDescription("");
       setDate(""); // Reset date
       setFile(null);
+      setNoticesFetched(false);
       fetchNotices(); // Refresh list
     } catch (error) {
       console.error("Error uploading notice:", error);

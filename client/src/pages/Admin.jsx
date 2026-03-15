@@ -71,19 +71,19 @@ const Admin = () => {
   const COORDINATOR_API_URL = "/users/coordinators";
 
   // Get token from localStorage
-  if(userInfo == null){
+  if (userInfo == null) {
     console.log("first time data set");
     setuserInfo(JSON.parse(localStorage.getItem("userInfo")))
   }
   // const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  
+
   const token = userInfo?.token;
 
   useEffect(() => {
     if (!userInfo || !token) { // token bhi add krdiye hai for safe play..
       navigate('/login');
     }
-    if (activeTab === "dashboard"){
+    if (activeTab === "dashboard") {
       fetchNotices();
       fetchTestimonials();
       fetchImages();
@@ -208,20 +208,20 @@ const Admin = () => {
   };
 
   const fetchNotices = async () => {
-    if (noticesFetched == false){ 
-    // idk due to rendering i think ye bar bar call kr rha to usko stop krne ke liye.. krdiye hai
-    try {
-      const response = await api.get(NOTICES_API_URL);
-      setNotices(response.data);
-      setStats(prev => ({ ...prev, notices: response.data.length }));
-      setNoticesFetched(true);
-    } catch (error) {
-      console.error("Error fetching notices:", error);
+    if (noticesFetched == false) {
+      // idk due to rendering i think ye bar bar call kr rha to usko stop krne ke liye.. krdiye hai
+      try {
+        const response = await api.get(NOTICES_API_URL);
+        setNotices(response.data);
+        setStats(prev => ({ ...prev, notices: response.data.length }));
+        setNoticesFetched(true);
+      } catch (error) {
+        console.error("Error fetching notices:", error);
+      }
     }
-  }
-  else {
-    console.log("already fetched");
-  }
+    else {
+      console.log("already fetched");
+    }
   };
 
   const fetchImages = async () => {
@@ -265,7 +265,7 @@ const Admin = () => {
     setMessage("");
 
     try {
-      await api.post(API_URL, formData, {
+      await api.post(NOTICES_API_URL, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`
@@ -322,7 +322,7 @@ const Admin = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this notice?")) return;
     try {
-      await api.delete(`${API_URL}/${id}`, {
+      await api.delete(`${NOTICES_API_URL}/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setNotices(notices.filter((n) => n._id !== id));
